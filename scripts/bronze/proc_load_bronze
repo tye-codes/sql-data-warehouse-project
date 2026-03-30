@@ -2,12 +2,18 @@
 =====================================
 Load Source Data into Bronze Layer
 =====================================
-
-This code will truncate existing data in the bronze tables and then load new data from CSV files.
-Additionally this code creates this process as a stored process under the name bronze.load_bronze.
-It also includes error handling, informational messaging and load time prints. 
+Script Purpose:
+	This code will truncate existing data in the bronze tables and then load new data from CSV files.
+	Additionally this code creates this process as a stored process under the name bronze.load_bronze.
+	It also includes error handling, informational messaging and load time prints. 
+Parameters:
+	None.
+	This stored proceedure does not accept or return any values.
+Usage Example:
+	EXEC bronze.load_bronze
 
 Warining: Adjust the file paths in the BULK INSERT statements to match the location of your CSV files.
+=====================================
 */
 
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
