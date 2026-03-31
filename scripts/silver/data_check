@@ -1,0 +1,49 @@
+/*
+=====================================================================================================================================================
+Usage:
+This code checks the data from the bronze layer on various columns to search for data quality issues such as leading spaces, NULLs and consistency in values. 
+======================================================================================================================================================
+*/
+
+
+/*
+==============================================
+ Check for nulls or duplicates in primary key
+==============================================
+*/
+SELECT
+	cst_id,
+	COUNT(*)
+FROM bronze.crm_cust_info
+GROUP BY cst_id
+HAVING COUNT(*) > 1 OR cst_id IS NULL;
+
+/*
+=============================================================
+Check for unwanted spaces in the first_name, last_name & gndr columns
+=============================================================
+*/
+SELECT cst_firstname
+FROM bronze.crm_cust_info
+WHERE cst_firstname != TRIM(cst_firstname)
+
+SELECT cst_lastname
+FROM bronze.crm_cust_info
+WHERE cst_lastname != TRIM(cst_lastname)
+
+SELECT cst_gndr
+FROM bronze.crm_cust_info
+WHERE cst_gndr != TRIM(cst_gndr)
+
+/*
+=============================================================
+Check for consistency in cst_gndr & cst_marital_status columns
+=============================================================
+*/
+SELECT DISTINCT cst_gndr
+FROM bronze.crm_cust_info
+
+SELECT DISTINCT cst_marital_status
+FROM bronze.crm_cust_info
+
+
