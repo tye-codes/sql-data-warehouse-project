@@ -120,5 +120,30 @@ SELECT
 	END AS sls_price
 FROM bronze.crm_sales_details
 
+----------------------------------
+------ erp_cust_az12 table -------
+----------------------------------
+TRUNCATE TABLE silver.erp_cust_az12;
+
+INSERT INTO silver.erp_cust_az12 (
+	cid,
+	bdate,
+	gen)
+
+SELECT
+	--- Remove NAS prefix to match silver.crm_cust_info table
+	CASE WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid,4, LEN(cid)) 
+		ELSE cid
+	END cid,
+	-- remove future birthdates
+	CASE WHEN bdate > GETDATE() THEN NULL
+		ELSE bdate
+	END AS bdate,
+	-- resolve consistency in gen column 
+	CASE WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
+		 WHEN UPPER(TRIM(gen)) IN ('F', 'MALE') THEN 'Male'
+		 ELSE 'n/a'
+	END AS gen
+FROM bronze.erp_cust_az12
 
 
