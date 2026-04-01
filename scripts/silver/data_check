@@ -7,10 +7,12 @@ This code checks the data from the bronze layer on various columns to search for
 
 
 /*
-==============================================
- Check for nulls or duplicates in primary key
-==============================================
+============================================================
+Check for data quality issues in the crm_cust_info table
+=============================================================
 */
+
+ -- Check for nulls or duplicates in primary key
 SELECT
 	cst_id,
 	COUNT(*)
@@ -18,11 +20,8 @@ FROM bronze.crm_cust_info
 GROUP BY cst_id
 HAVING COUNT(*) > 1 OR cst_id IS NULL;
 
-/*
-=============================================================
-Check for unwanted spaces in the first_name, last_name & gndr columns
-=============================================================
-*/
+-------------------------------------------------------------
+-- Check for unwanted spaces in the first_name, last_name & gndr columns
 SELECT cst_firstname
 FROM bronze.crm_cust_info
 WHERE cst_firstname != TRIM(cst_firstname)
@@ -35,15 +34,48 @@ SELECT cst_gndr
 FROM bronze.crm_cust_info
 WHERE cst_gndr != TRIM(cst_gndr)
 
-/*
-=============================================================
-Check for consistency in cst_gndr & cst_marital_status columns
-=============================================================
-*/
+---------------------------------------------------------------------------
+-- Check for consistency in cst_gndr & cst_marital_status columns
 SELECT DISTINCT cst_gndr
 FROM bronze.crm_cust_info
 
 SELECT DISTINCT cst_marital_status
 FROM bronze.crm_cust_info
 
+/*
+============================================================
+Data quality checks for bronze.crm_prd_info
+=============================================================
+*/
 
+-- Check for nulls or duplicates in primary key
+SELECT
+	prd_id,
+	COUNT(*)
+	FROM bronze.crm_prd_info
+	GROUP BY prd_id
+	HAVING COUNT(*) > 1 OR prd_id IS NULL;
+
+-- Check for unwanted spaces
+SELECT prd_nm
+FROM bronze.crm_prd_info
+WHERE prd_nm != TRIM(prd_nm)
+
+-- Check for null or negative numbers
+SELECT prd_cost
+FROM bronze.crm_prd_info
+WHERE prd_cost < 0 OR prd_cost IS NULL
+
+-- Data standardisation and consistency
+SELECT DISTINCT prd_line
+FROM bronze.crm_prd_info
+
+-- Check for invalid date orders
+-- end date is always before start date. Dates also overlap when they shouldn't 
+SELECT
+	*
+FROM bronze.crm_prd_info
+WHERE prd_end_dt < prd_start_dt
+
+SELECT *
+FROM bronze.crm_prd_info 
