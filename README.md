@@ -1,7 +1,15 @@
 # Data Warehouse and Analytics Project
 
 Welcome to the **Data Warehouse and Analytics Project** Repository!
-This project demonstrates a comprehensive data warehousing and analytics solution, from building a data warehouse to generating actionalble insights. Designed as a portfolio project it highlights industry best practices in data engineering and analytics. 
+This project demonstrates a comprehensive data warehousing and analytics solution, from building a data warehouse to generating actionalble insights. Designed as a portfolio project it the ability to use cores skills involved with SQL, including:
+  - Data filtering in the WHERE clause
+  - Joins
+  - Date & Time Functions
+  - NULL & string functions
+  - Window functions
+  - Subqueries
+  - Views
+  - Stored Proceedures
 
 ----
 
